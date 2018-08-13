@@ -20,10 +20,6 @@ exclude = ["Cargo.lock"]
 travis-ci = { repository = "SpinResearch/RustySecrets", branch = "master" }
 coveralls = { repository = "SpinResearch/RustySecrets", branch = "master", service = "github" }
 
-[features]
-default = []
-dss = []
-
 [dependencies]
 base64 = "0.9.0"
 rand = "^0.4.2"

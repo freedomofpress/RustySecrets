@@ -18,7 +18,7 @@ pub(crate) struct SSS;
 impl SSS {
     /// Performs threshold k-out-of-n Shamir's secret sharing.
     pub fn split_secret<R: Rng>(
-        &self,
+        self,
         rng: &mut R,
         threshold: u8,
         shares_count: u8,
@@ -97,7 +97,7 @@ impl SSS {
     /// Recovers the secret from a k-out-of-n Shamir's secret sharing.
     ///
     /// At least `k` distinct shares need to be provided to recover the share.
-    pub fn recover_secret(shares: Vec<Share>, verify_signatures: bool) -> Result<Vec<u8>> {
+    pub fn recover_secret(shares: &[Share], verify_signatures: bool) -> Result<Vec<u8>> {
         let (threshold, slen) = validate_signed_shares(&shares, verify_signatures)?;
 
         let mut col_in = Vec::with_capacity(threshold as usize);

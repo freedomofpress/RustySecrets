@@ -1,12 +1,12 @@
 use errors::*;
-use proto::VersionProto;
 use proto::wrapped::SecretProto;
+use proto::VersionProto;
 use protobuf;
 use protobuf::Message;
 use rand::Rng;
 
-use sss::SSS;
 pub(crate) use sss::Share;
+use sss::SSS;
 
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) struct WrappedSecrets;
@@ -14,7 +14,7 @@ pub(crate) struct WrappedSecrets;
 impl WrappedSecrets {
     /// Performs threshold k-out-of-n Shamir's secret sharing.
     pub fn split_secret<R: Rng>(
-        &self,
+        self,
         rng: &mut R,
         k: u8,
         n: u8,
@@ -38,7 +38,7 @@ impl WrappedSecrets {
     /// Recovers the secret from a k-out-of-n Shamir's secret sharing.
     ///
     /// At least `k` distinct shares need to be provided to recover the share.
-    pub fn recover_secret(shares: Vec<Share>, verify_signatures: bool) -> Result<SecretProto> {
+    pub fn recover_secret(shares: &[Share], verify_signatures: bool) -> Result<SecretProto> {
         let secret = SSS::recover_secret(shares, verify_signatures)?;
 
         protobuf::parse_from_bytes::<SecretProto>(secret.as_slice())

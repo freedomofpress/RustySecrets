@@ -114,5 +114,5 @@ pub fn split_secret_rng<R: Rng>(
 /// ```
 pub fn recover_secret(shares: &[String], verify_signatures: bool) -> Result<Vec<u8>> {
     let shares = Share::parse_all(shares, verify_signatures)?;
-    SSS::recover_secret(shares, verify_signatures)
+    SSS::recover_secret(&shares, verify_signatures)
 }

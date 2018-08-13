@@ -20,7 +20,16 @@ matrix:
       before_script:
         - rustup component add rustfmt-preview
       script:
-        - cargo fmt --all -- --write-mode=diff
+        - cargo fmt --all -- --check
+    - env:
+        - NAME='clippy'
+        # use env so updating versions causes cache invalidation
+        - CLIPPY_VERSION=0.0.212
+      rust: nightly-2018-07-22
+      before_script:
+        - cargo install clippy --version $CLIPPY_VERSION || echo "clippy already installed"
+      script:
+        - cargo clippy --all --tests --all-features -- -D clippy
     - env: NAME='kcov'
       sudo: required # travis-ci/travis-ci#9061
       before_script:
@@ -30,7 +39,7 @@ matrix:
       script:
         - cargo kcov --print-install-kcov-sh | sh
         - cargo update # Creates `Cargo.lock` needed by next command
-        - cargo kcov --verbose --features dss --coveralls -- --verify --exclude-pattern=/.cargo,/usr/lib,src/proto
+        - cargo kcov --verbose --coveralls -- --verify --exclude-pattern=/.cargo,/usr/lib,src/proto
       addons:
         apt:
           packages:
@@ -47,4 +56,4 @@ env:
 script:
   - cargo build --verbose --all-features
   - cargo test --verbose --all-features
-  - cargo doc --verbose --all-features
+  - cargo doc --verbose --all-features --no-deps

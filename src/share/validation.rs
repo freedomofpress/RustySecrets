@@ -9,7 +9,7 @@ use share::{IsShare, IsSignedShare};
 
 /// TODO: Doc
 pub(crate) fn validate_signed_shares<S: IsSignedShare>(
-    shares: &Vec<S>,
+    shares: &[S],
     verify_signatures: bool,
 ) -> Result<(u8, usize)> {
     let result = validate_shares(shares)?;
@@ -22,7 +22,7 @@ pub(crate) fn validate_signed_shares<S: IsSignedShare>(
 }
 
 /// TODO: Doc
-pub(crate) fn validate_shares<S: IsShare>(shares: &Vec<S>) -> Result<(u8, usize)> {
+pub(crate) fn validate_shares<S: IsShare>(shares: &[S]) -> Result<(u8, usize)> {
     if shares.is_empty() {
         bail!(ErrorKind::EmptyShares);
     }
@@ -57,10 +57,7 @@ pub(crate) fn validate_shares<S: IsShare>(shares: &Vec<S>) -> Result<(u8, usize)
             threshold = threshold_;
         } else if threshold_ != threshold {
             bail!(ErrorKind::InconsistentThresholds(
-                id,
-                threshold_,
-                ids,
-                threshold
+                id, threshold_, ids, threshold
             ))
         }
 

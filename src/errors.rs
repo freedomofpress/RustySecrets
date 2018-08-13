@@ -149,7 +149,7 @@ error_chain! {
 
 /// Takes a `Vec<T>` and formats it like the normal `fmt::Debug` implementation, unless it has more
 //than five elements, in which case the rest are replaced by ellipsis.
-fn no_more_than_five<T: fmt::Debug + fmt::Display>(vec: &Vec<T>) -> String {
+fn no_more_than_five<T: fmt::Debug + fmt::Display>(vec: &[T]) -> String {
     let len = vec.len();
     if len > 5 {
         let mut string = String::from("[");
